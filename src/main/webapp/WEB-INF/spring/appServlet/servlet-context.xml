@@ -13,7 +13,7 @@
 	<mvc:annotation-driven/>
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<!-- <resources mapping="/resources/**" location="/resources/" /> -->
+	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
 	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
@@ -23,6 +23,24 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.project.my" />
+	
+	<beans:bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+		<beans:property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+		<beans:property name="url" value="jdbc:mariadb://121.133.91.235:3306/class21jobs" />
+		<beans:property name="username" value="class21user1" />
+		<beans:property name="password" value="user1!!" />
+	</beans:bean>
+	
+
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+		<beans:property name="mapperLocations" value="classpath:/sql/mapper/*.xml"></beans:property>
+	</beans:bean>
+	
+	
+	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="sqlSessionFactory"></beans:constructor-arg>
+	</beans:bean>
 	
 	
 	

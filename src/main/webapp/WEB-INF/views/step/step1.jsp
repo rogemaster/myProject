@@ -7,6 +7,10 @@
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <title>Insert title here</title>
 </head>
+<%
+	
+
+%>
 <body>
 
 <button type="button" value="2" onclick="onGugudanClick(event)">2단</button>
@@ -18,6 +22,8 @@
 <button type="button" value="8" onclick="onGugudanClick(event)">8단</button>
 <button type="button" value="9" onclick="onGugudanClick(event)">9단</button>
 
+<button class="btn" type="button" value="9">9단</button>
+
 <div>
 	<p id="gugudan"></p>
 </div>
@@ -25,6 +31,11 @@
 </body>
 
 <script type="text/javascript">
+
+	/* $(".btn").on("click", function(event) {
+		console.log($(this).val());
+		console.log(event.target.value);
+	}); */
 
 	function onGugudanClick(event) {
 		var dan = {"dan" : event.target.value};
