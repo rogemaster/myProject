@@ -69,13 +69,50 @@
 		}
 	}
 	
-	function emailChk() {
+	function emailChk(event) {
+		console.log(event);
 		var param = $('#email').val();
 		var res = emailChkUtil(param);
 		
 		if(!res) {
 			alert('이메일 형식이 맞지 않습니다.');
 			$('#email').val('');
+		}
+	}
+
+	function accessNumberCall() {
+		var data = {"param" : $('#email').val()};
+		console.log(data);
+		
+		if(data === '' || data === null || data === undefined) {
+			alert('이메일이 입력 되지 않았습니다.');	
+			
+		}else {
+			$('#access').attr('disabled', false);
+			$('#accessCheck').attr('disabled', false);
+			
+			$.post("authSendMail", data, function(res) {
+				console.log(res);
+				if(res === 'success') {
+					alert('인증번호 메일이 발송되었습니다.')
+				}else {
+					alert('인증번호 메일 발송이 실패되었습니다. 입력하신 이메일을 다시 확인하시기 바랍니다.');
+				}
+			});
+			
+		}
+	}
+
+	function accessNumberCheck() {
+		var data = $('#access').val();
+		var code = sessionStorage.getItem("authCode");
+		console.log(code, ' / ', sessionStorage.getItem("authCode"));
+		
+		if(sessionStorage.getItem("authCode") === data) {
+			alert('인증번호 정상');
+		}else {
+			alert('입력하신 인증번호가 다릅니다. 다시 확인하시고 입력 하시기 바랍니다.');
+			$('#access').val('');
 		}
 	}
 	
@@ -97,11 +134,6 @@
 			alert('입력하시 비밀번호가 맞지 않습니다. 확인 하고 다시 입력 하시기 바랍니다.');
 			$('pw_chk').val('');
 		}
-	}
-
-	function accessNumberCall() {
-		$('#access').attr('disabled', false);
-		$('#accessCheck').attr('disabled', false);
 	}
 	
 	function joinSubmit() {
