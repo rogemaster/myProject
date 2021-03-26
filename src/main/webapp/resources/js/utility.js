@@ -1,10 +1,6 @@
 /**
- * 
+ * Utility
  */
-
-function test1() {
-	return false;
-}
 
 function langKorChkUtil(param) {
 	console.log('langKorChk function::', param);

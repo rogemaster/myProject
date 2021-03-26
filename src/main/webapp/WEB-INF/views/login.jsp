@@ -33,7 +33,6 @@
 	});
 	
 	function fn_loginAction() {
-		console.log(test1()); // js 파일 테스트 확인
 		var param = {
 				"id" : $('#id').val(),
 				"pw" : $('#pw').val()
@@ -53,8 +52,11 @@
 		case "pwError":
 			alert("아이디 또는 비밀번호가 다릅니다. 확인하시고 재로그인 하시기 바랍니다.");
 			break;
+		case "fail":
+			alert("이미 다른 브라우저 또는 컴퓨터에서 로그인이 되어 있습니다. 정상 로그아웃 진행하시고 로그인 하시기 바랍니다.");
+			break;
 		case "ok":
-			location.href = "main";
+			location.href = "list";
 			break;
 		}
 	}

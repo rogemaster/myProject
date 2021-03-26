@@ -3,6 +3,9 @@ package com.project.my.mainController;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.my.mainDTO.UserDto;
+import com.project.my.mainDTO.UserSessionInfoVO;
 
 @Controller
 public class MainController {
@@ -34,11 +38,14 @@ public class MainController {
 		return "join";
 	}
 	
+	UserDto userDto = new UserDto();
+	UserSessionInfoVO userVO = new UserSessionInfoVO();
+	
 	@RequestMapping(value = "/loginAccess", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> loginController(@RequestParam Map<String, Object> param) {
+	public Map<String, Object> loginController(@RequestParam Map<String, Object> param, HttpServletRequest request) {
 		
-		UserDto userDto = sqlsession.selectOne("userInfoMapper.getUserInfo", param.get("id"));
+		userDto = sqlsession.selectOne("userInfoMapper.getUserInfo", param.get("id"));
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		if(userDto == null) {
@@ -49,10 +56,33 @@ public class MainController {
 				map.put("result", "pwError");
 				return map;
 			}else {
-				map.put("result", "ok");
+				map.put("result", SessionChk(request));
 				return map;
 			}
 		}
+	}
+	
+	public String SessionChk(HttpServletRequest request) {
+		
+		String sId = request.getSession().getId();
+		
+		if(userVO.getSessionId() == null) {
+			HttpSession session = request.getSession();
+			userVO.setUserId(userDto.getId());
+			userVO.setUserName(userDto.getName());
+			session.setAttribute("sessionUser", userVO);
+			userVO.setSessionId(request.getSession().getId());
+			
+			return "ok";
+			
+		}else if(sId.equals(userVO.getSessionId())) {
+			return "ok";
+			
+		}else {
+			return "fail";
+			
+		}
+		
 	}
 
 }
