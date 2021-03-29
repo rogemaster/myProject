@@ -70,8 +70,8 @@ public class MainController {
 			HttpSession session = request.getSession();
 			userVO.setUserId(userDto.getId());
 			userVO.setUserName(userDto.getName());
-			session.setAttribute("sessionUser", userVO);
 			userVO.setSessionId(request.getSession().getId());
+			session.setAttribute("sessionUser", userVO);
 			
 			return "ok";
 			
