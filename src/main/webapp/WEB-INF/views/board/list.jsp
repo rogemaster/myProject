@@ -5,14 +5,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+.top-btn {
+	margin-left: 868px;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+.excel-btn {
+	margin-left: 940px;
+	margin-top: 5px;
+}
+</style>
 <meta charset="UTF-8">
+<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
-
-	<div style="margin-left: 943px; margin-top: 10px">
-		<a href="/my/insert"><button type="button">글쓰기</button></a>
-	</div>
+	
+		<div class="top-btn">
+			<c:if test="${!empty sessionScope.sessionUser }">
+				<a href="/my/insert"><button type="button">글쓰기</button></a>
+			</c:if>
+			<button id="logout" type="button">로그아웃</button>
+		</div>
 	
 	<table border="1px" width="1000px">
 		<tr style="text-align: center;">
@@ -24,16 +39,25 @@
 		<c:forEach items="${list }" var="list">
 			<tr>
 				<td style="text-align: center;"><fmt:formatNumber value="${list.no }" /></td>
-				<td style="text-align: center;">${list.title }</td>
+				<td style="text-align: center;"><a href="/my/detail?no=${list.no }">${list.title }</a></td>
 				<td style="text-align: center;">${list.writer }</td>
 				<td style="text-align: center;"><fmt:formatDate pattern="yyyy.MM.dd" value="${list.reg_date }"/></td>
 			</tr>
 		</c:forEach>
 	</table>
+	<button class="excel-btn" id="excelDown" type="button" onclick="excelDown()">EXCEL</button>
 	
 </body>
 
 <script type="text/javascript">
 
+	$('#logout').on('click', function() {
+		location.href = 'logout';
+	});
+
+	function excelDown() {
+		console.log('excelDown!');
+	}
+	
 </script>
 </html>

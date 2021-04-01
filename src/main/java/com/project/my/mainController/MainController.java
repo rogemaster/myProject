@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.my.mainDTO.UserDto;
-import com.project.my.mainDTO.UserSessionInfoVO;
+import com.project.my.mainDTO.UserSessionInfoDto;
 
 @Controller
 public class MainController {
@@ -39,7 +39,7 @@ public class MainController {
 	}
 	
 	UserDto userDto = new UserDto();
-	UserSessionInfoVO userVO = new UserSessionInfoVO();
+	UserSessionInfoDto userSessionInfoDto = new UserSessionInfoDto();
 	
 	@RequestMapping(value = "/loginAccess", method = RequestMethod.POST)
 	@ResponseBody
@@ -66,16 +66,16 @@ public class MainController {
 		
 		String sId = request.getSession().getId();
 		
-		if(userVO.getSessionId() == null) {
+		if(userSessionInfoDto.getSessionId() == null) {
 			HttpSession session = request.getSession();
-			userVO.setUserId(userDto.getId());
-			userVO.setUserName(userDto.getName());
-			userVO.setSessionId(request.getSession().getId());
-			session.setAttribute("sessionUser", userVO);
+			userSessionInfoDto.setUserId(userDto.getId());
+			userSessionInfoDto.setUserName(userDto.getName());
+			userSessionInfoDto.setSessionId(request.getSession().getId());
+			session.setAttribute("sessionUser", userSessionInfoDto);
 			
 			return "ok";
 			
-		}else if(sId.equals(userVO.getSessionId())) {
+		}else if(sId.equals(userSessionInfoDto.getSessionId())) {
 			return "ok";
 			
 		}else {
@@ -83,6 +83,12 @@ public class MainController {
 			
 		}
 		
+	}
+	
+	@RequestMapping(value = "/logout")
+	public String logoutController(HttpSession session) {
+		session.invalidate();
+		return "redirect:/login";
 	}
 
 }
