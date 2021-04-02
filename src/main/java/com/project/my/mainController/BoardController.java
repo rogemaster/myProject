@@ -1,17 +1,11 @@
 package com.project.my.mainController;
 
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.project.my.mainDTO.BoardDto;
 import com.project.my.mainDTO.UserSessionInfoDto;
-import com.project.my.service.ExcelService;
 
 @Controller
 public class BoardController {
@@ -98,27 +89,5 @@ public class BoardController {
 		}
 	}
 	
-	@RequestMapping(value = "/excelDown")
-	public void boardExcelDownController(MultipartHttpServletRequest request, Model model, HttpServletResponse response) throws Exception {
-		
-		PrintWriter printWriter = response.getWriter();
-		JSONObject jsonObject = new JSONObject();
-		ExcelService service = new ExcelService();
-		
-		MultipartFile file = null;
-		Iterator<String> iterator = request.getFileNames();
-		
-		if(iterator.hasNext()) {
-			file = request.getFile(iterator.next());
-		}
-		
-		List<BoardDto> list = service.uploadExcelFile(file);
-		
-		if(list != null) {
-			jsonObject.put("rs", "0000");
-		}else {
-			jsonObject.put("rs", "9999");
-		}
-		
-	}
+	
 }

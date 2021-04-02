@@ -45,7 +45,18 @@
 			</tr>
 		</c:forEach>
 	</table>
-	<button class="excel-btn" id="excelDown" type="button" onclick="excelDown()">EXCEL</button>
+	
+	<c:if test="${!empty sessionScope.sessionUser }">
+		<form action="excelDown" method="post" >
+			<button class="excel-btn" id="excelDown" type="submit">EXCEL</button>
+		</form>
+	</c:if>
+	<%-- <c:if test="${!empty sessionScope.sessionUser }">
+		<form id="excelUpForm" name="excelUpForm" enctype="multipart/form-data" method="post">
+			<input type="file" id="excelFile" name="excelFile">
+			<button type="button" onclick="onClickExcelUpload()">저장</button>
+		</form>
+	</c:if> --%>
 	
 </body>
 
@@ -55,9 +66,26 @@
 		location.href = 'logout';
 	});
 
-	function excelDown() {
-		console.log('excelDown!');
-	}
+	/* function onClickExcelUpload() {
+		var form = new FormData(document.getElementById('excelUpForm'));
+		console.log('form::', form);
+		
+		$.ajax({
+			url: 'excelUpload',
+			dataType: 'json',
+			data: form,
+			processData: false,
+			contentType: false,
+			type: 'POST',
+			success: function(data) {
+				console.log('success::', data);
+			},
+			error: function(xhr, status, error) {
+				console.log('error', error);
+			}
+		});
+	} */
+
 	
 </script>
 </html>
