@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.project.my.mainDTO.BoardDto;
-import com.project.my.mainDTO.UserSessionInfoVO;
+import com.project.my.mainDTO.UserSessionInfoDto;
 
 @Controller
 public class BoardController {
@@ -27,20 +27,10 @@ public class BoardController {
 	@RequestMapping(value = "/list")
 	public String boardListController(Model model, HttpSession session) {
 		
-		if(session.getAttribute("sessionUser") == null) {
-			return "redirect:/login";
-			
-		}else {
-			
-			List<BoardDto> list = sqlsession.selectList("boardInfoMapper.getBoardList");
-			System.out.println("board list :: " + list.toString());
-			
-			model.addAttribute("list", list);
-			
-			return "board/list";
-			
-		}
+		List<BoardDto> list = sqlsession.selectList("boardInfoMapper.getBoardList");
+		model.addAttribute("list", list);
 		
+		return "board/list";
 	}
 	
 	@RequestMapping("/insert")
@@ -59,10 +49,7 @@ public class BoardController {
 	@ResponseBody
 	public int boardContentsSave(@RequestParam Map<String, Object> param, HttpSession session) {
 		
-		System.out.println("sava param:: " + param);
-		System.out.println(session.getAttribute("sessionUser").toString());
-		
-		UserSessionInfoVO userVO = (UserSessionInfoVO) session.getAttribute("sessionUser");
+		UserSessionInfoDto userVO = (UserSessionInfoDto) session.getAttribute("sessionUser");
 		BoardDto boardDto = new BoardDto();
 		boardDto.setTitle((String)param.get("title"));
 		boardDto.setContents((String)param.get("contents"));
@@ -72,4 +59,35 @@ public class BoardController {
 		
 		return res;
 	}
+	
+	@RequestMapping(value = "/detail")
+	public String boardDetailController(@RequestParam String no, HttpSession session, Model model) {
+		
+		if(session.getAttribute("sessionUser") == null) {
+			return "redirect:/login";
+			
+		}else {
+			
+			BoardDto boardDto = sqlsession.selectOne("boardInfoMapper.getBoardDetail", Integer.parseInt(no));
+			model.addAttribute("boardDetail", boardDto);
+			
+			return "board/detail";
+		}
+	}
+	
+	@RequestMapping(value = "/modify")
+	public String boardModifyController(@RequestParam String no, HttpSession session, Model model) {
+		
+		if(session.getAttribute("sessionUser") == null) {
+			return "redirect:/login";
+		}else {
+			
+			BoardDto boardDto = sqlsession.selectOne("boardInfoMapper.getBoardDetail", Integer.parseInt(no));
+			model.addAttribute("boardContents", boardDto);
+			
+			return "board/modify";
+		}
+	}
+	
+	
 }

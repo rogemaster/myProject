@@ -12,4 +12,8 @@
 	<select id="getBoardList" resultType="com.project.my.mainDTO.BoardDto">
   		SELECT * FROM board ORDER BY reg_date DESC
   	</select>
+  	
+  	<select id="getBoardDetail" resultType="com.project.my.mainDTO.BoardDto">
+  		SELECT * FROM board WHERE NO = #{no}
+  	</select>
 </mapper>

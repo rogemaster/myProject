@@ -1,6 +1,6 @@
 package com.project.my.mainDTO;
 
-public class UserSessionInfoVO {
+public class UserSessionInfoDto {
 	
 	private String userId;
 	private String userName;
